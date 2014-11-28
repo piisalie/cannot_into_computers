@@ -1,0 +1,53 @@
+@import 'helper_mixins';
+@import 'nav';
+@import 'code_blocks';
+
+
+body {
+    margin: 2px;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    font-size: 17px;
+    background: darkgrey;
+}
+
+a:visited {
+    color: #558C89;
+}
+a:link {
+    color: #74AFAD;
+}
+a:hover {
+    color: #000000;
+}
+
+#main {
+    @include radius-corners(7px);
+    max-width: 640px;
+    min-width: 290px;
+    padding: 10px;
+    margin: 35px auto 0px;
+    background-color: #ECECEA;
+    box-shadow: 2px 2px 2px #888888;
+
+    h2 {
+        margin-top: 5px;
+    }
+}
+
+footer {
+    text-align: right;
+    font-size: 0.7em;
+    max-width: 630px;
+    min-width: 290px;
+    margin: 0 auto;
+    padding: 5px 5px 5px 5px;
+    a:visited {
+        color: #ECECEA;
+    }
+    a:link {
+        color: #ECECEA;
+    }
+    a:hover {
+        color: #000000;
+    }
+}

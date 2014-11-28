@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>cannot.into.computers<%= ' - ' + current_article.title unless current_article.nil? %></title>
+    <%= feed_tag :atom, "#{blog.options.prefix.to_s}/feed.xml", title: "Atom Feed" %>
+    <%= stylesheet_link_tag "main" %>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+  </head>
+  <body>
+
+    <nav>
+      <ul>
+        <li><%= link_to 'Home',   '/index.html' %></li>|
+        <li><%= link_to 'Rust',   tag_path('rust') %></li>
+      </ul>
+    </nav>
+
+    <div id="main" role="main">
+      <%= yield %>
+    </div>
+
+    <footer>
+      paul at sqint .co | <%= link_to 'githubs', 'https://github.com/piisalie' %> | <%= link_to 'twitterverse', 'https://twitter.com/piisalie' %>
+    </footer>
+
+  </body>
+</html>

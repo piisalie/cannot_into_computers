@@ -1,0 +1,89 @@
+---
+title: Hello Rust
+date: 2014-08-27 00:14 UTC
+tags: rust
+---
+## Strings, vectors, and trying to say 'Hello'
+
+Disclaimer: I'm probably wrong; I'm usually wrong. (please correct me, I love corrections)
+
+As a newb to Rust I found the vector/string paradigm quite daunting. Let's play:
+
+``` rust
+fn main() {
+    let place    = "World";
+    let greeting = "Hello";
+    let message  = greeting + " " + place;
+    println!("{}", message)
+}
+
+// strings.rs:4:20: 4:31 error: binary operation `+` cannot be applied to type `&'static str`
+// strings.rs:4     let message  = place + " " + greeting;
+
+```
+
+Horray for helpful compiler errors!
+There are two types of strings in Rust (the docs say as much but I'm easily distracted/confused and need to play with it to have it click).
+* `&str` a section of a String
+* `String` a vector (array) of u8 thingies (nevermind what those are for now)
+
+Here's a Ruby example of how I tend to think of the two:
+
+``` ruby
+string = %w[ l o l w a t ]
+str    = string[0..-1]
+```
+
+The `&str` is a pointer (as denoted by the `&` in the name) into a vector (array) of u8 (letters). When you make a `"string"` Rust sets up the vector and points to it for you.
+
+Let's try manually setting the type:
+
+``` rust
+fn main() {
+    let place: String    = "World";
+    let greeting: String = "Hello";
+    let message  = greeting + " " + place;
+    println!("{}", message)
+}
+// strings.rs:2:28: 2:35 error: mismatched types: expected `collections::string::String` but found `&'static
+//  str` (expected struct collections::string::String but found &-ptr)
+// strings.rs:2     let place: String    = "World";
+//                                          ^~~~~~~
+```
+
+(there were actually two errors, one for each string, but we're being terse here)
+
+Huh, a quick lookup of the docs shows: `String::from_str()`
+
+``` rust
+fn main() {
+    let place    = String::from_str( "World" );
+    let greeting = String::from_str( "Hello" );
+    let message  = place + " " + greeting;
+    println!("{}", message)
+}
+
+// => Hello World
+```
+
+This is works, we're explicitly saying we want want Strings up front. You can also convert on the fly with `to_string()`
+
+``` rust
+fn main() {
+    let place    = "World";
+    let greeting = "Hello";
+    let message  = greeting.to_string() + " " + place.to_string();
+    println!("{}", message)
+}
+
+// => Hello World
+```
+
+Small Gotcha:
+The attuned viewer might notice something fishy here. There is a `" "` (seemingly static) `&str` getting added here. Also note that:
+`    let message  = greeting.to_string() + " " + place;`
+compiles just fine but
+`    let message  = greeting + " " + place.to_string();`
+does not.
+
+I *think* this has to do with how Add is [implemented](http://doc.rust-lang.org/std/string/struct.String.html#method.add) for String, but not for string pointers.

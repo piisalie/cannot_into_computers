@@ -1,0 +1,33 @@
+nav {
+    max-width: 660px;
+    min-width: 310px;
+    padding: 0px 0px 5px 0px;
+    margin: 0 auto;
+    font-size: 1.2em;
+
+    ul {
+        @include radius-corners(5px);
+        list-style-type: none;
+        margin: 0px;
+        float: left;
+        padding: 0px;
+        color: #ECECEA;
+        background-color: #74AFAD;
+        box-shadow: 1px 1px 1px #656565;
+
+        li {
+            padding: 5px;
+            display: inline-block;
+        }
+    }
+
+    a:visited {
+        color: #ECECEA;
+    }
+    a:link {
+        color: #ECECEA;
+    }
+    a:hover {
+        color: #000000;
+    }
+}
