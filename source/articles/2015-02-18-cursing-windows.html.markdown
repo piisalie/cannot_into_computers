@@ -3,7 +3,8 @@ title: Cursing Windows
 date: 2015-02-18 14:40 UTC
 tags: ruby, ncurses, curses
 ---
-AKA 'How On earth do I make a window?!'
+## Cursing Windows
+### AKA 'How On earth do I make a window?!'
 
 This post uses [ncurses-ruby](https://github.com/eclubb/ncurses-ruby) I'd
 recommend looking through some of the examples with the caveat that they
