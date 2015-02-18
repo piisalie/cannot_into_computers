@@ -7,7 +7,7 @@ tags: ruby, ncurses, curses
 ### AKA 'How On earth do I make a window?!'
 
 This post uses [ncurses-ruby](https://github.com/eclubb/ncurses-ruby) I'd
-recommend looking through some of the examples with the caveat that they
+recommend looking through some of the [examples](https://github.com/eclubb/ncurses-ruby/tree/master/examples) with the caveat that they
 are not quite idiomatic Ruby. They are helpful enough to get started.
 
 ```ruby
