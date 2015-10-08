@@ -6,7 +6,7 @@ tags: ruby
 
 ## TDD: Top Down Design
 
-Note: This is post number 1 in a series on building an application without a proper ORM
+Note: This is post number one in a series on building an application without a proper ORM.
 
 Backstory: For a long time, I've wanted an app I could put recipes in that showed each step
 of the recipe, in order, on a singular page, with nothing else. I have trouble finding/keeping
