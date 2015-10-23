@@ -27,13 +27,11 @@ Ideally if we ask to display two cars we'd get a Toyota
 and a Chevrolet. If we ask for three cars we'd get a two different
 Toyotas (a Camry and a Highlander) and a Chevrolet.
 
-It isn't too hard to implement first two tests using `ListWrapper`
-around an `Array` to allow rescue `StopIteration` and allow for
-endless enumeration:
+It isn't too hard to get these two tests passing:
 
 ```ruby
 def sample(count, list)
-  makes = ListWrapper.new(list.map { |vehicle| vehicle[:make]}.uniq)
+  makes = list.map { |vehicle| vehicle[:make]}.uniq.cycle
 
   list.select { |vehicle| vehicle[:make] == makes.next }.take(count)
 end
@@ -41,7 +39,7 @@ end
 describe 'sample' do
 
   it 'returns a good distribution of makes' do
-    sample = sample(3, cars.shuffle)
+    sample = sample(3, cars)
     makes  = sample.map { |vehicle| vehicle[:make] }
     expect(makes.sort).to eq(["Toyota", "Toyota", "Chevrolet"].sort)
   end
@@ -55,8 +53,8 @@ describe 'sample' do
 end
 ```
 
-The good news: these tests pass; the bad news: they're a false positive.
-If we change the order of the cars the test for distribution of models fails.
+The bad news is they're false positives. If we change the order of the cars
+the test for distribution of models fails.
 
 We can modify the test to fail sometimes by shuffling the cars array on each
 test run, but I don't particularly like that idea. There's no kill like over
@@ -78,17 +76,17 @@ glaring flaw in my implementation.
 
 If the ordering of `cars` by make is `[ 'Toyota', 'Toyota', 'Chevrolet', 'Toyota' ]`
 and the ordering of the `makes` enumerator is `[ 'Toyota', 'Chevrolet', 'Toyota', 'Chevrolet' ]`
-it is possible to return only ONE sample.
+it is possible to return only ONE sample. We got lucky with select.
 
-What do we actually want to do? We want to take a car with a matching make from
-the `makes` enumerator (preferably one we haven't seen before). We got lucky with
-select. This fixes the first two tests and gives an expected failure on the third
-test:
+Maybe we should step back: what do we actually want to do?
+We want to take a car with a matching make from the `makes` enumerator
+(preferably one we haven't seen before). This fixes the first test and gives
+an expected failure on the last test:
 
 
 ```ruby
 def sample(count, list)
-  makes = ListWrapper.new(list.map { |i| i[:make]}.uniq)
+  makes = list.map { |i| i[:make]}.uniq.cycle
   cars_by_make = list.group_by { |car| car[:make] }
 
   samples = [ ]
@@ -103,16 +101,16 @@ def sample(count, list)
 end
 ```
 
-The third test is a bit more tricky. Initially I had thought we needed a
-product of the list of unique makes and unique models that we could use
-to choose values from cars:
+The test for Makes distribution is a bit more tricky. Initially I had thought
+we needed a product of the list of unique makes and unique models that we
+could use to choose values from cars:
 
 ```ruby
 def sample(count, list)
   makes  = list.map { |i| i[:make]}.uniq
   models = list.map { |i| i[:model]}.uniq
 
-  pairings = ListWrapper.new(makes.product(models))
+  pairings = makes.product(models).cycle
 
   samples = [ ]
 
@@ -162,13 +160,25 @@ cross_joining=# SELECT DISTINCT make, model FROM vehicles WHERE
 
 ```
 
-One weakness of this approach is we always get the same ordering of results.
-Perhaps in a later exercise I'll remedy that and add some additional features.
+We're selecting the same varied group of makes and models, as in the Ruby example.
+Things tend to get a little odd as the table size grows. The query is quite performant,
+(even on tables over 100_000) but does not always give the results I'd prefer / expect.
 
-Code from this can be found [here](https://gist.github.com/piisalie/c913bdbfcf9211d9f927)
+Another weakness of this approach is we always get the same ordering of results. So if
+we wanted to show the user a different selection of vehicles on the next visit it can't
+quite deliver. Perhaps in a later exercise I'll try and find solutions to these problems.
+
+Code from this post can be found [here](https://gist.github.com/piisalie/c913bdbfcf9211d9f927)
+
+Changes for this article can be found [here](https://github.com/piisalie/cannot_into_computers/commits/master/source/articles/2015-10-22-on-selling-used-cars-with-postgres.html.markdown)
 
 Notes:
 
+* This only SORT OF works, and need further improvements.
 * This is probably totally wrongheaded and my SQL is terrible.
 * I welcome corrections in the form of issues or PRs on this blog's [repo](https://github.com/piisalie/cannot_into_computers)
 * I actually drive a Toyota Camry with ~200_000miles.
+
+
+Special thanks to [Nathan Long](https://twitter.com/sleeplessgeek) for proof
+reading, feedback, corrections, and being a generally awesome person.
