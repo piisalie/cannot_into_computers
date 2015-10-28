@@ -135,6 +135,10 @@ If you're REALLY paying attention you may have noticed what we're
 actually doing is re-implementing a self `CROSS JOIN`. We can net
 similar results with a relational database.
 
+EDIT: The following only accidentally correct and somewhat silly. I think
+what we actually want here is `WITH RECURSIVE` but it probably warrants
+a post of its own.
+
 ```
 cross_joining=# SELECT * FROM vehicles;                                                                                                                                                           make    |   model    | year | mileage |       color        
 -----------+------------+------+---------+--------------------
