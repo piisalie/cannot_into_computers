@@ -3,8 +3,6 @@ title: Hello Rust
 date: 2014-08-27 00:14 UTC
 tags: rust
 ---
-## Strings, vectors, and trying to say 'Hello'
-
 Disclaimer: I'm probably wrong; I'm usually wrong. (please correct me, I love corrections)
 
 As a newb to Rust I found the vector/string paradigm quite daunting. Let's play:

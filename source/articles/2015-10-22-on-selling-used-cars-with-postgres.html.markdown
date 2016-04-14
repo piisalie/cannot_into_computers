@@ -3,9 +3,6 @@ title: On Selling Used Cars With Postgres
 date: 2015-10-22 23:34 UTC
 tags: ruby, postgres
 ---
-
-## On Selling Used Cars with Postgres
-
 Let's say we have an inventory of used vehicles and we'd like to
 display a selection of these vehicles to a user. It would be
 ideal if we showed the user a group varied by brand / model.

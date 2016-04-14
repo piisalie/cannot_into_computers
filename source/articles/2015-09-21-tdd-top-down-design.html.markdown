@@ -3,9 +3,6 @@ title: TDD - Top Down Design
 date: 2015-09-21 12:30 UTC
 tags: ruby
 ---
-
-## TDD: Top Down Design
-
 Note: This is post number one in a series on building an application without a proper ORM.
 
 Backstory: For a long time, I've wanted an app I could put recipes in that showed each step

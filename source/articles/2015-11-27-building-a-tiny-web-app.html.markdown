@@ -3,9 +3,6 @@ title: Building A Tiny Web App
 date: 2015-11-27 18:30 UTC
 tags: ruby, lesscode
 ---
-
-## Tiny libraries for tiny web apps.
-
 I've been infatuated with the LessCode movement as of late. A few days ago I set out
 to see how quickly I could construct a small database backed application. Granted
 it did take a bit longer than 15 minutes, the libraries used in this project are
