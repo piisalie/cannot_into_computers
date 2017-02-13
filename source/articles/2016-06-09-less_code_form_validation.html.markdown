@@ -92,7 +92,7 @@ given name.
 <p>
   <form action="/recipes/create" method="post">
     <label>Name</label>
-    <input type="text" name="name", value="{{name}}"/>
+    <input type="text" name="name" value="{{name}}"/>
 
 <!-- .... -->
 ```
