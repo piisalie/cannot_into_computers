@@ -23,7 +23,7 @@ You can also select certain words from past commands.
 
 ## Command word/argument look up
 
-It is also possible to reuse only certain parts of the last command:
+It is also possible to reuse only certain parts of a past command:
 
 `!:0` will return the first word of the last command (usually the invoked command), observe:
 
@@ -45,13 +45,15 @@ You can also use the `!:*` to get just the arguments of the last command
 
 
 ## Find and Replace
-The best thing you can do with command history is replace bits of the command you're reusing. Let's say you just spent the last 20 mins building up this supremely perfect copy command:
+The best thing you can do with command history is replace bits of the command you're reusing by using syntax like: `!:1:s/something/something_else/`
+
+Let's say you just spent the last 20 mins building up this supremely perfect copy command:
 
 ```shell
 $ cp /lol/some/super/nested/directory/file.txt /var/log/other/place/that/is/probably/annoying/file.txt
 ```
 
-Then after running it remember you had wanted to rename the file too. Not to worry, you can do find and replace on reused portions of commands.
+Then after running the command you realize you had wanted to rename the file too. Not to worry, you can do find and replace on reused portions of commands from your history.
 
 ```shell
 $ mv !:2 !:2:s/file.txt/what_i_actually_wanted.txt/
