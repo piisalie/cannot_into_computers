@@ -11,17 +11,17 @@ tldr: Don't want to configure / learn a new external library just to use a dang 
 
 ### Context
 
-You've started your first Elxir web application; it's functional and fast and delightful and you're ready to deploy. The Internet suggests you [always build a release](https://elixirforum.com/t/always-use-releases/4573) for production using Distillery (they're right btw because Distillery is awesome). It seems to work but your environment variable configuration does not go through quite as expected. You return to the docs and notice this bit [outlining your problem](https://hexdocs.pm/distillery/getting-started.html#application-configuration). It helpfully offers a few solutions:
+You've started your first Elixir web application; it's functional and fast and delightful and you're ready to deploy. The Internet suggests you [always build a release](https://elixirforum.com/t/always-use-releases/4573) for production using Distillery (they're right btw because Distillery is awesome). It seems to be going smoothly but your environment variable configuration does not work quite as expected. You return to the docs and notice this section [outlining your problem](https://hexdocs.pm/distillery/getting-started.html#application-configuration). It helpfully offers a few solutions:
 
-* Set the special`REPLACE_OS_VARS=true` and add you variable to `vm.args` (`-my_app key #{ENV_VAR}`)
+* Set the special `REPLACE_OS_VARS=true` and add you variable to `vm.args`: `-my_app key #{ENV_VAR}`
 * Use a library ([Conform](https://github.com/bitwalker/conform), [Flasked](https://github.com/asaaki/flasked), etc)
 
-Both options are great solutions. However, you've already spent time learning and addding one additional tool (Distiller) in order to build a release. Maybe it's a side project, or a small tool for work, and adding an industrial grade library or learning what a `vm.args` file is seems out of reach. These feelings are valid; you just want it to work. If this sounds familiar then you're in the right place.
+Both options are great solutions. However, you've already spent time learning and adding one additional tool (Distillery) in order to build a release. If it's a side project, or a small tool for work adding an industrial grade library or taking time to learn what a `vm.args` file is seems out of reach. These feelings are valid; you just want it to work. If this sounds familiar then you're in the right place.
 
 
 ### Solution
 
-Alternatively, it is possible to use the Application `start` callbacks to load environment variables into the [Application config](https://hexdocs.pm/elixir/Application.html#module-application-environment). IMPORTANT CAVEAT FROM THAT DOCUMENTATION:
+Good news! It is possible to use the Application `start` function to load environment variables into the [Application config](https://hexdocs.pm/elixir/Application.html#module-application-environment). IMPORTANT CAVEAT FROM THAT DOCUMENTATION:
 
 > Keep in mind that each application is responsible for its environment. Do not use the functions in this module for directly accessing or modifying the environment of other applications (as it may lead to inconsistent data in the application environment).
 
@@ -39,7 +39,7 @@ In a Phoenix Application or Mix Application generated with `--sup` look for: `.l
 
 In an umbrella application, each Application should be responsible for its own config.
 
-In a project you built yourself a week ago that has no disernable file structure because you were curious (yes we all do this): it is whatever the `mod` atom references in your `mix.exs` `application` function. (eg: `mod: {Bananas.Application, []}` means you should find the `Bananans.Application` module)
+In a project you built yourself a week ago that has no discernible file structure because you were curious (yes we all do this): it is whatever the `mod` atom references in your `mix.exs` `application` function. (eg: `mod: {Bananas.Application, []}` means you should find the `Bananans.Application` module)
 
 
 #### Add Runtime Configuration
@@ -60,7 +60,7 @@ You may also do any sort of parsing on the loaded variable (since `System.get_en
 
 #### ??? (refactor probably)
 
-The solution above will work when you have only a few environment variables, but as an application grows (and it will grow) it will require better ways to manage complexity. One possibility is extracting the configuration to a module and then calling the appropriate function for the Application from `start`.
+The solution above will work when you have only a few environment variables, but as an application grows (and it will grow) it will require better ways to manage complexity. One possibility is extracting the configuration to a module and then calling the appropriate function for the Application from `start`. This also gives us a place to raise errors and keep the application from starting if an environment variable is missing.
 
 ```elixir
 defmodule MyApp.Configuration
@@ -80,7 +80,7 @@ defmodule MyApp.Configuration
 end
 ```
 
-And use it in the `start` function:
+And use it in the Application `start` function:
 
 ```elixir
   def start(_type, _args) do
@@ -99,4 +99,3 @@ And use it in the `start` function:
 ### Closing
 
 Is this a viable longterm solution? The answer to that depends. You can benefit from less cognitive overhead and inital effort using this method; it's just plain Elixir. However, the cost of configuration may become unwieldy later down the road.
-
